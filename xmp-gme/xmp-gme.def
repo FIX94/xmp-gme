@@ -1,0 +1,3 @@
+LIBRARY xmp-gme
+EXPORTS
+	XMPIN_GetInterface

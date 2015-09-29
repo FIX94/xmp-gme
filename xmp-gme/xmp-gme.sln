@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xmp-gme", "xmp-gme.vcxproj", "{B7D392EF-4EAB-D542-65D6-DC8695828838}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590} = {C3E262D2-2D15-4A46-98F1-2CE8A74F3590}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game_Music_Emu", "..\..\..\src\gme\msvc\Game_Music_Emu.vcxproj", "{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7D392EF-4EAB-D542-65D6-DC8695828838}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7D392EF-4EAB-D542-65D6-DC8695828838}.Debug|Win32.Build.0 = Debug|Win32
+		{B7D392EF-4EAB-D542-65D6-DC8695828838}.Release|Win32.ActiveCfg = Release|Win32
+		{B7D392EF-4EAB-D542-65D6-DC8695828838}.Release|Win32.Build.0 = Release|Win32
+		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}.Debug|Win32.Build.0 = Debug|Win32
+		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}.Release|Win32.ActiveCfg = Release|Win32
+		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
