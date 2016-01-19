@@ -19,17 +19,23 @@ static const XMPFUNC_IN *xmpfin;
 
 static BOOL WINAPI GME_CheckFile(const char *filename, XMPFILE file)
 {
-	gme_t *checkfile = NULL;
+	gme_t *emu = NULL;
 	byte *data  = (byte*)xmpfmisc->Alloc(xmpffile->GetSize(file));
 	int filesize = xmpffile->Read(file, data, xmpffile->GetSize(file));
-	gme_err_t check = gme_open_data((void*)data,filesize,&checkfile,gme_info_only);
+	gme_err_t check = gme_open_data((void*)data,filesize,&emu,gme_info_only);
 	if (check != NULL)
 	{
 		xmpfmisc->Free(data);
-		gme_delete(checkfile);
+		gme_delete(emu);
+		emu = NULL;
 		return false;
 	}
-	gme_delete(checkfile);
+	xmpfmisc->Free(data);
+	if(emu)
+	{
+		gme_delete(emu);
+		emu = NULL;
+	}
 	return true;
 }
 
@@ -81,27 +87,32 @@ static BOOL WINAPI GME_GetTags(char *tags[8])
 
 static BOOL WINAPI GME_GetFileInfo(const char *filename, XMPFILE file, float *length, char *tags[8])
 {
-	gme_t *checkfile = NULL;
+	gme_t *emu = NULL;
 	gme_info_t *infofile = NULL;
 	byte *data  = (byte*)xmpfmisc->Alloc(xmpffile->GetSize(file));
 	int filesize = xmpffile->Read(file, data, xmpffile->GetSize(file));
-	gme_err_t check = gme_open_data((void*)data,filesize,&checkfile,gme_info_only);
+	gme_err_t check = gme_open_data((void*)data,filesize,&emu,gme_info_only);
 	if (check != NULL)
 	{
 		xmpfmisc->Free(data);
-		gme_delete(checkfile);
+		gme_delete(emu);
+		emu = NULL;
 		return false;
 	}
 	
-	gme_track_info( checkfile, &infofile,0 );
-	*length = songlen(0, checkfile, infofile)/1000.0;
+	gme_track_info( emu, &infofile,0 );
+	*length = songlen(0, emu, infofile)/1000.0;
 	GetTag(infofile->song,tags);
 	GetTag(infofile->author,tags +1);
 	GetTag(infofile->game,tags + 2);
 	GetTag(infofile->comment, tags + 6);
 	GetTag(gme_identify_header(data), tags + 7);
 	xmpfmisc->Free(data);
-	gme_delete(checkfile);
+	if (emu)
+	{
+		gme_delete(emu);
+		emu = NULL;
+	}
 	return TRUE;
 }
 
@@ -112,8 +123,12 @@ static DWORD WINAPI GME_Open(const char *filename, XMPFILE file)
 	gme_err_t check =  gme_open_data((void*)data,filesize, &emu, 44100);
 	if (check !=NULL)
 	{
-		
 		xmpfmisc->Free(data);
+		if (emu)
+		{
+			gme_delete(emu);
+			emu = NULL;
+		}
 	}
 	gme_track_info( emu, &info,0 );
 	float len = songlen(0,emu,info)/1000.0;
@@ -127,6 +142,7 @@ static DWORD WINAPI GME_Open(const char *filename, XMPFILE file)
 static void WINAPI GME_Close()
 {
 	gme_delete(emu);
+	emu = NULL;
 }
 
 static void WINAPI GME_SetFormat(XMPFORMAT *form)
@@ -154,12 +170,12 @@ static DWORD WINAPI GME_Process(float *buf, DWORD count)
 	if (!option_loop)
 	{
         if (gme_track_ended(emu))return 0;
-	    gme_set_fade(emu, tracklen); 
+	    gme_set_fade(emu, tracklen,0); 
 	    gme_ignore_silence(emu,false);
 	}
 	else
 	{
-		gme_set_fade(emu, INT_MAX); 
+		gme_set_fade(emu, INT_MAX, 0);
 		gme_ignore_silence(emu,true);
 	}
 
@@ -192,12 +208,12 @@ static DWORD WINAPI GME_GetSubSongs(float *length)
 	return gme_track_count(emu);
 }
 
-extern "C"__declspec(dllexport) XMPIN *WINAPI XMPIN_GetInterface(DWORD face, InterfaceProc faceproc)
+extern "C" XMPIN *WINAPI XMPIN_GetInterface(DWORD face, InterfaceProc faceproc)
 {
 	static XMPIN xmpin = {
 		NULL,
-		"GME (rev .3)",
-		"Console music files\0ay/gbs/gym/hes/kss/nsf/nsfe/rsn/sap/sgc/spc/vgm/vgz",
+		"GME (rev .4)",
+		"Console music files\0ay/gbs/gym/hes/kss/nsf/nsfe/rsn/sap/sgc/spc/sfm/vgm/vgz",
 		NULL,
 		NULL,
 		GME_CheckFile,

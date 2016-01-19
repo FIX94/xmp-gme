@@ -18,7 +18,7 @@
     <ClInclude Include="..\xmpin.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\gme\msvc\Game_Music_Emu.vcxproj">
+    <ProjectReference Include="Game_Music_Emu\msvc\Game_Music_Emu.vcxproj">
       <Project>{c3e262d2-2d15-4a46-98f1-2ce8a74f3590}</Project>
     </ProjectReference>
   </ItemGroup>
@@ -26,17 +26,21 @@
     <ProjectName>xmp-gme</ProjectName>
     <SccProjectName />
     <SccLocalPath />
+    <ProjectGuid>{B7D392EF-4EAB-D542-65D6-DC8695828838}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -63,6 +67,12 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\codecrack\src\xmplay\xmp-gme\Game_Music_Emu\gme;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\codecrack\src\xmplay\xmp-gme\Game_Music_Emu\gme;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -79,15 +89,17 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>C:\codecrack\src\gme\gme;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
-      <OutputFile>C:\apps\xmplay36\xmp-gme.dll</OutputFile>
+      <OutputFile>C:\apps\xmplay\xmp-gme.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/w32_dll_source.pdb</ProgramDatabaseFile>
       <ImportLibrary>.\Debug/w32_dll_source.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <ModuleDefinitionFile>xmp-gme.def</ModuleDefinitionFile>
+      <AdditionalDependencies>zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -120,14 +132,19 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalIncludeDirectories>C:\codecrack\src\gme\gme;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CallingConvention>Cdecl</CallingConvention>
     </ClCompile>
     <Link>
-      <OutputFile>C:\apps\xmplay36\xmp-gme.dll</OutputFile>
+      <OutputFile>C:\apps\xmplay\xmp-gme.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release/w32_dll_source.pdb</ProgramDatabaseFile>
       <ImportLibrary>.\Release/w32_dll_source.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <ModuleDefinitionFile>xmp-gme.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <AdditionalDependencies>zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
