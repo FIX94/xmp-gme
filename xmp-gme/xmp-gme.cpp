@@ -12,6 +12,7 @@ gme_t* emu = NULL;
 Effects_Buffer *effects = NULL;
 gme_info_t *info = NULL;
 int tracklen = 0;
+int subsong = 0;
 
 static HINSTANCE hInst;
 static const XMPFUNC_MISC *xmpfmisc;
@@ -79,7 +80,7 @@ static void GetTotalLength(float *length)
 
 static BOOL WINAPI GME_GetTags(char *tags[8])
 {
-	gme_track_info( emu, &info,0 );
+	gme_track_info(emu, &info, subsong);
 	GetTag(info->song,tags);
 	GetTag(info->author,tags +1);
 	GetTag(info->game,tags + 2);
@@ -133,11 +134,12 @@ static DWORD WINAPI GME_Open(const char *filename, XMPFILE file)
 			emu = NULL;
 		}
 	}
-	gme_track_info( emu, &info,0 );
-	float len = songlen(0,emu,info)/1000.0;
-	tracklen = songlen(0,emu,info);
+	subsong = 0;
+	gme_track_info(emu, &info, subsong);
+	float len = songlen(subsong, emu, info) / 1000.0;
+	tracklen = songlen(subsong, emu, info);
 	if (len > 0) xmpfin->SetLength(len, TRUE);
-	gme_start_track( emu, 0 );
+	gme_start_track(emu, subsong);
 	xmpfmisc->Free(data);
 	return 2; /* close file */
 }
@@ -146,6 +148,7 @@ static void WINAPI GME_Close()
 {
 	gme_delete(emu);
 	emu = NULL;
+	subsong = 0;
 }
 
 static void WINAPI GME_SetFormat(XMPFORMAT *form)
@@ -198,7 +201,14 @@ static double WINAPI GME_SetPosition(DWORD pos)
 {
 	int song = pos - XMPIN_POS_SUBSONG;
 	if (song >= 0 && song < gme_track_count(emu)) {
-		gme_start_track( emu, song);
+		subsong = song;
+		gme_track_info(emu, &info, subsong);
+		float len = songlen(subsong, emu, info) / 1000.0;
+		tracklen = songlen(subsong, emu, info);
+		if (len > 0) xmpfin->SetLength(len, TRUE);
+		gme_start_track(emu, subsong);
+		//request title update too, could be something like a .nsfe
+		xmpfin->UpdateTitle(NULL);
 		return 0;
 	}
 	gme_seek(emu,pos);
@@ -220,14 +230,14 @@ extern "C" XMPIN *WINAPI XMPIN_GetInterface(DWORD face, InterfaceProc faceproc)
 {
 	static XMPIN xmpin = {
 		NULL,
-		"GME (rev .4fork)",
+		"GME (rev .41fork)",
 		"Console music files\0ay/gbs/gym/hes/kss/nsf/nsfe/rsn/sap/sgc/spc/sfm/vgm/vgz",
 		NULL,
 		NULL,
 		GME_CheckFile,
 		GME_GetFileInfo,
 		GME_Open,
-	    GME_Close,
+		GME_Close,
 		NULL,
 		GME_SetFormat,
 		GME_GetTags,
