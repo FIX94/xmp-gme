@@ -1,6 +1,10 @@
+File_Extractor/
+Game_Music_Emu/
+Release/*.lib
+xmp-gme.dll
+*.db
 *.exp
 *.ilk
-*.lib
 *.obj
 *.opensdf
 *.pdb

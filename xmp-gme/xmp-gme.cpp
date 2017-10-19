@@ -1,4 +1,5 @@
 #include "gme.h"
+#include "Effects_Buffer.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -8,6 +9,7 @@
 
 
 gme_t* emu = NULL;
+Effects_Buffer *effects = NULL;
 gme_info_t *info = NULL;
 int tracklen = 0;
 
@@ -120,7 +122,8 @@ static DWORD WINAPI GME_Open(const char *filename, XMPFILE file)
 {
 	byte *data  = (byte*)xmpfmisc->Alloc(xmpffile->GetSize(file));
 	int filesize = xmpffile->Read(file, data, xmpffile->GetSize(file));
-	gme_err_t check =  gme_open_data((void*)data,filesize, &emu, 44100);
+	gme_err_t check =  gme_open_data((void*)data,filesize, &emu, 48000);
+	gme_set_stereo_depth(emu, 0.5);
 	if (check !=NULL)
 	{
 		xmpfmisc->Free(data);
@@ -147,7 +150,7 @@ static void WINAPI GME_Close()
 
 static void WINAPI GME_SetFormat(XMPFORMAT *form)
 {
-	form->rate = 44100;
+	form->rate = 48000;
 	form->chan = 2;
 	form->res = 16 / 8;
 }
@@ -162,6 +165,7 @@ static void WINAPI GME_GetGeneralInfo(char *buf)
 	buf = NULL;
 }
 
+static int loop_ms = 5000; //5 seconds
 static DWORD WINAPI GME_Process(float *buf, DWORD count)
 {
 	DWORD n = count;
@@ -169,13 +173,17 @@ static DWORD WINAPI GME_Process(float *buf, DWORD count)
 	DWORD option_loop = xmpfmisc->GetConfig(XMPCONFIG_LOOP)&3;
 	if (!option_loop)
 	{
-        if (gme_track_ended(emu))return 0;
-	    gme_set_fade(emu, tracklen,0); 
-	    gme_ignore_silence(emu,false);
+		if (gme_track_ended(emu))return 0;
+		if (info->length <= 0 && info->loop_length <= 0)
+			gme_set_fade(emu, tracklen - loop_ms, loop_ms);
+		else
+			gme_set_fade(emu, tracklen, 0);
+		gme_ignore_silence(emu,false);
 	}
 	else
 	{
-		gme_set_fade(emu, INT_MAX, 0);
+		//negative value disables fade
+		gme_set_fade(emu, -1, 0);
 		gme_ignore_silence(emu,true);
 	}
 
@@ -189,7 +197,7 @@ static DWORD WINAPI GME_Process(float *buf, DWORD count)
 static double WINAPI GME_SetPosition(DWORD pos)
 {
 	int song = pos - XMPIN_POS_SUBSONG;
-	if (song >= 0 && song < gme_track_count(emu)-1) {
+	if (song >= 0 && song < gme_track_count(emu)) {
 		gme_start_track( emu, song);
 		return 0;
 	}
@@ -212,7 +220,7 @@ extern "C" XMPIN *WINAPI XMPIN_GetInterface(DWORD face, InterfaceProc faceproc)
 {
 	static XMPIN xmpin = {
 		NULL,
-		"GME (rev .4)",
+		"GME (rev .4fork)",
 		"Console music files\0ay/gbs/gym/hes/kss/nsf/nsfe/rsn/sap/sgc/spc/sfm/vgm/vgz",
 		NULL,
 		NULL,

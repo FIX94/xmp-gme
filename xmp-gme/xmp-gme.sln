@@ -1,14 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xmp-gme", "xmp-gme.vcxproj", "{B7D392EF-4EAB-D542-65D6-DC8695828838}"
 	ProjectSection(ProjectDependencies) = postProject
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE} = {E7DD9FB8-A045-42A3-A25A-37A96B1421AE}
 		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590} = {C3E262D2-2D15-4A46-98F1-2CE8A74F3590}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game_Music_Emu", "Game_Music_Emu\msvc\Game_Music_Emu.vcxproj", "{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "File_Extractor", "File_Extractor\win32\File_Extractor\File_Extractor.vcxproj", "{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +54,18 @@ Global
 		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}.ReleaseWithoutAsm|Win32.Build.0 = Release|Win32
 		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}.ReleaseWithoutAsm|x64.ActiveCfg = Release|Win32
 		{C3E262D2-2D15-4A46-98F1-2CE8A74F3590}.ReleaseWithoutAsm|x64.Build.0 = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Debug|Itanium.ActiveCfg = Debug|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Debug|Win32.Build.0 = Debug|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Debug|x64.ActiveCfg = Debug|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Release|Itanium.ActiveCfg = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Release|Win32.ActiveCfg = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Release|Win32.Build.0 = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.Release|x64.ActiveCfg = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.ReleaseWithoutAsm|Itanium.ActiveCfg = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.ReleaseWithoutAsm|Win32.ActiveCfg = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.ReleaseWithoutAsm|Win32.Build.0 = Release|Win32
+		{E7DD9FB8-A045-42A3-A25A-37A96B1421AE}.ReleaseWithoutAsm|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
